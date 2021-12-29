@@ -4,6 +4,8 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    "babel-plugin-transform-class-properties"
+    "babel-plugin-transform-class-properties",
+    "@babel/plugin-transform-runtime",
+    "react-hot-loader/babel"
   ]
 }

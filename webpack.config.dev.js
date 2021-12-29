@@ -1,8 +1,6 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = {
@@ -10,14 +8,16 @@ module.exports = {
     home: './src/index.js',
     header: './src/Header/index.js',
   },
+  // entry: ['./src/index.js'],
+  // entry: ['react-hot-loader/patch', './src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
   },
-  mode: 'production',
+  mode: 'development',
   resolve: {
-    extensions: ['.js', '.jsx', '.tsx', 'ts'],
+    extensions: ['.js', '.ts', '.tsx', '.jsx'],
     alias: {
       '@components': path.resolve(__dirname, 'src/components/'),
       '@containers': path.resolve(__dirname, 'src/containers/'),
@@ -68,6 +68,10 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 3005,
+    hot: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
@@ -84,31 +88,8 @@ module.exports = {
     }),
   ],
   optimization: {
-    minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
     splitChunks: {
       chunks: 'all',
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-          chunks: 'all',
-          name: 'commons',
-          filename: 'assets/common.[chunkhash].js',
-          reuseExistingChunk: true,
-          enforce: true,
-          priority: 20,
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          name: 'vendors',
-          filename: 'assets/vendor.[chunkhash].js',
-          reuseExistingChunk: true,
-          enforce: true,
-          priority: 10,
-        },
-      },
     },
   },
 };
