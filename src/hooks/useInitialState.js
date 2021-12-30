@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const API = process.env.API;
+const API = 'https://us-central1-gndx-fake-api.cloudfunctions.net/api';
 
 const useInitialState = () => {
   try {
@@ -14,11 +14,11 @@ const useInitialState = () => {
           'Content-Type': 'application/json',
         },
       });
-
+      console.log(response);
       const data = await response.json();
-
-      setProducts(data.products);
-      setCart(data.cart);
+      console.log(data);
+      setProducts(data);
+      setCart([]);
     }, []);
 
     return {
